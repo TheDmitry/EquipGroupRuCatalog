@@ -1,0 +1,35 @@
+services:
+  nginx:
+    build: ./docker/nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - php
+    networks:
+      - app
+
+  php:
+    build: ./docker/php
+    volumes:
+      - ./www:/var/www/html
+    networks:
+      - app
+
+  mysql:
+    image: mysql:8.0
+    env_file:
+      - .env
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - app
+
+networks:
+  app:
+
+volumes:
+  db:

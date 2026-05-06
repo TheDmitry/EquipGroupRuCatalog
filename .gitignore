@@ -1,0 +1,38 @@
+# =========================
+# Laravel core
+# =========================
+/vendor
+/node_modules
+
+/.env
+/.env.backup
+
+/storage/*.key
+/storage/logs
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# =========================
+# Docker / environment
+# =========================
+docker-compose.override.yml
+*.log
+
+# MySQL dump / data
+*.sql
+*.sqlite
+*.sqlite3
+
+# =========================
+# Composer / npm
+# =========================
+composer.phar
+package-lock.json
+yarn.lock
+
+# =========================
+# Runtime
+# =========================
+.phpunit.result.cache
+.php_cs.cache
