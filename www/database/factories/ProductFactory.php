@@ -20,7 +20,7 @@ class ProductFactory extends Factory
     {
         return [
             'id_group' => Group::inRandomOrder()->first()?->id ?? Group::factory(),
-            'name' => fake()->words(2, false),
+            'name' => fake()->word(),
         ];
     }
 }

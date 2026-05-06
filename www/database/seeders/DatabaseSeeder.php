@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         Group::all()->each(function ($group) {
             Group::factory()
                 ->count(rand(0, 3))
-                ->create(['id_parent' => $group->id()]);
+                ->create(['id_parent' => $group->id]);
         });
 
         Product::factory()->count(50)->create();
