@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Group;
+use App\Models\Product;
+use App\Models\Price;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        Group::factory()->count(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Group::all()->each(function ($group) {
+            Group::factory()
+                ->count(rand(0, 3))
+                ->create(['id_parent' => $group->id()]);
+        });
+
+        Product::factory()->count(50)->create();
+
+        Price::factory()->count(50)->create();
     }
 }
