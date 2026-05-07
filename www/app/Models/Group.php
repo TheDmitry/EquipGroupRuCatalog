@@ -33,7 +33,7 @@ class Group extends Model
         $ids = $this->products->pluck('id')->toArray();
         
         foreach ($this->children as $child) {
-            $ids = array_merge($ids, $child->getAllProductIds());
+            $ids = array_merge($ids, $child->getProductIds());
         }
         
         return $ids;
