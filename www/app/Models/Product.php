@@ -24,4 +24,9 @@ class Product extends Model
     {
         return $this->hasOne(Price::class, 'id_product');
     }
+
+    public function getFormattedPrice(): string
+    {
+        return number_format($this->price->price ?? 0, 2, '.', ' ') . ' ₽';
+    }
 }

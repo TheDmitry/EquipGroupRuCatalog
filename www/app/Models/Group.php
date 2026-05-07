@@ -27,4 +27,15 @@ class Group extends Model
     {
         return $this->hasMany(Product::class, 'id_group');
     }
+
+    public function getProductIds(): array
+    {
+        $ids = $this->products->pluck('id')->toArray();
+        
+        foreach ($this->children as $child) {
+            $ids = array_merge($ids, $child->getAllProductIds());
+        }
+        
+        return $ids;
+    }
 }
