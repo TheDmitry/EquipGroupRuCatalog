@@ -27,6 +27,11 @@ class DatabaseSeeder extends Seeder
 
         Product::factory()->count(50)->create();
 
-        Price::factory()->count(50)->create();
+        Product::all()->each(function ($product) {
+            Price::factory()
+                ->count(rand(1, 5))
+                ->for($product)
+                ->create();
+        });
     }
 }

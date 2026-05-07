@@ -19,7 +19,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_group' => Group::inRandomOrder()->first()?->id ?? Group::factory(),
+            'id_group' => Group::inRandomOrder()->first()->value('id') ?? Group::factory()->create()->id,
             'name' => fake()->word(),
         ];
     }
