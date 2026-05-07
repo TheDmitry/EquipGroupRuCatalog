@@ -19,8 +19,13 @@ class CatalogController extends Controller
 
         $products = Product::query()
             ->with(['group', 'price'])
-            ->join('prices', 'products.id', '=', 'prices.id_product')
-            ->orderBy($sort === 'price' ? 'prices.price' : 'products.name', $direction)
+            ->leftJoin('prices', 'products.id', '=', 'prices.id_product')
+            ->orderBy(
+                $sort === 'price'
+                ? 'prices.price'
+                : 'products.name',
+                $direction
+            )
             ->select('products.*')
             ->paginate(12)
             ->withQueryString();

@@ -3,19 +3,18 @@
 @section('content')
     <div class="row">
         <div class="col-4">
-            <ul>
+            <div class="list-group">
                 @foreach ($groups as $group)
-                    <li>
-                        <a href="/group/{{ $group->id }}">
-                            {{ $group->name }}
-                        </a>
-                    </li>
+                    <a href="/group/{{ $group->id }}" class="list-group-item list-group-item-action">
+                        {{ $group->name }}
+                    </a>
                 @endforeach
-            </ul>
+            </div>
         </div>
 
-        <div class="col-8 container">
-            <div class="row row-cols-2">
+        <div class="col-8">
+            @include('components.sort-dropdown')
+            <div class="row row-cols-1 gap-0 row-gap-1 d-flex">
                 @foreach ($products as $product)
                     <div class="col">
                         <div class="card">
