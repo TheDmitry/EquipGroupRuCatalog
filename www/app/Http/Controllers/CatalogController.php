@@ -21,7 +21,7 @@ class CatalogController extends Controller
             ->with('children')
             ->get();
 
-        foreach( $groups as $group ) {
+        foreach ($groups as $group) {
             $groupIds = $group->getProductIds();
 
             $group->productsCount = Product::where('id_group', $groupIds)->count();
@@ -39,22 +39,46 @@ class CatalogController extends Controller
             ->select('products.*')
             ->paginate($pageSize)
             ->withQueryString();
-    
-        
+
+
         return view('catalog.index', compact('groups', 'products'));
     }
 
     public function group(int $id, Request $request): View
     {
-        $parent = Group::find($id);
-        $children = Group::where('id_parent', $id);
-        $productIds = $parent->getProductIds();
+        $sort = $request->input('sort', 'name') === 'name' ? 'name' : 'price';
+        $direction = $request->input('direction', 'asc') === 'asc' ? 'asc' : 'desc';
+        $pageSize = $request->integer('pagesize', 12);
 
-        $products = Product::with(['group', 'price'])
-            ->whereIn('id', $productIds)
-            ->paginate(12);
+        $parent = Group::with('children')->findOrFail($id);
+
+        $groups = Group::where('id_parent', 0)
+            ->with('children')
+            ->get();
+
+        foreach ($groups as $group) {
+            $groupIds = $group->getProductIds();
+
+            $group->productsCount = Product::where('id_group', $groupIds)->count();
+        }
+
+        $groupIds = $parent->getProductIds();
+
+        $products = Product::query()
+            ->with(['group', 'price'])
+            ->whereIn('id_group', $groupIds)
+            ->leftJoin('prices', 'products.id', '=', 'prices.id_product')
+            ->orderBy(
+                $sort === 'price' ? 'prices.price' : 'products.name',
+                $direction
+            )
+            ->select('products.*')
+            ->paginate($pageSize)
+            ->withQueryString();
+
         
-        return view('catalog.group', compact('parent', 'children', 'products'));
+
+        return view('catalog.group', compact('parent', 'groups', 'products'));
     }
 
     public function product(int $id, Request $request): View

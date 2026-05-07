@@ -31,11 +31,11 @@ class Group extends Model
     public function getProductIds(): array
     {
         $ids = $this->products->pluck('id')->toArray();
-        
+
         foreach ($this->children as $child) {
             $ids = array_merge($ids, $child->getProductIds());
         }
-        
+
         return $ids;
     }
 }

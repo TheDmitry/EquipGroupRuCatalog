@@ -1,6 +1,6 @@
 @extends('layouts.base')
 @php
-    $view = request('view', 'list');
+    $view = request('view', 'list') === 'list' ? 'list' : 'grid';
 @endphp
 @vite('resources/js/index.js')
 
