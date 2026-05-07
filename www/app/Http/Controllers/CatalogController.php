@@ -13,6 +13,9 @@ class CatalogController extends Controller
     {
         $sort = $request->input('sort', 'name') === 'name' ? 'name' : 'price';
         $direction = $request->input('direction', 'asc') === 'asc' ? 'asc' : 'desc';
+        $pageSize = $request->integer('pagesize', 12);
+
+
 
         $groups = Group::where('id_parent', 0)
             ->with('children')
@@ -34,7 +37,7 @@ class CatalogController extends Controller
                 $direction
             )
             ->select('products.*')
-            ->paginate(12)
+            ->paginate($pageSize)
             ->withQueryString();
     
         

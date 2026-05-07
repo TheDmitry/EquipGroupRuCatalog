@@ -2,11 +2,29 @@
 
 @section('content')
     <div class="row">
-        <div class="col-4">
-            <div class="list-group">
+        <div class="col-2">
+            <div class="list-group shadow-sm">
                 @foreach ($groups as $group)
                     <a href="/group/{{ $group->id }}" class="list-group-item list-group-item-action">
-                        {{ $group->name }} ({{ $group->productsCount }})
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <div class="fw-semibold">
+                                    {{ $group->name }}
+                                </div>
+
+                                <small class="text-muted">
+                                    Категория
+                                </small>
+                            </div>
+
+                            <span class="badge bg-secondary rounded-pill fs-6">
+                                {{ $group->productsCount }}
+                            </span>
+
+                        </div>
+
                     </a>
                 @endforeach
             </div>
@@ -14,7 +32,15 @@
 
         <div class="col-8">
             <div class="row row-cols-1 gap-0 row-gap-1 d-flex">
-            @include('components.sort-dropdown')
+
+                <div class="container-fluid d-flex gap-2">
+                    @include('components.sort-dropdown')
+                    @include('components.pagination-settings')
+                </div>
+
+                <div class="mt-4">
+                    {{ $products->links('components.pagination') }}
+                </div>
                 @foreach ($products as $product)
                     <div class="col">
                         <div class="card">
@@ -28,9 +54,6 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-            <div class="mt-4">
-                {{ $products->links('components.pagination') }}
             </div>
         </div>
     </div>
