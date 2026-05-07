@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-#[Fillable(['id_group', 'name'])]
+#[Fillable(['id_group', 'price'])]
 class Product extends Model
 {
     use HasFactory;
@@ -19,13 +19,9 @@ class Product extends Model
         return $this->belongsTo(Group::class, 'id_group');
     }
 
-    public function prices(): HasMany
-    {
-        return $this->hasMany(Price::class, 'id_product');
-    }
 
     public function price(): HasOne
     {
-        return $this->hasOne(Price::class, 'id_product')->latestOfMany();
+        return $this->hasOne(Price::class, 'id_product');
     }
 }
