@@ -13,8 +13,8 @@
         </div>
 
         <div class="col-8">
-            @include('components.sort-dropdown')
             <div class="row row-cols-1 gap-0 row-gap-1 d-flex">
+            @include('components.sort-dropdown')
                 @foreach ($products as $product)
                     <div class="col">
                         <div class="card">
@@ -28,6 +28,9 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+            <div class="mt-4">
+                {{ $products->links('components.pagination') }}
             </div>
         </div>
     </div>
