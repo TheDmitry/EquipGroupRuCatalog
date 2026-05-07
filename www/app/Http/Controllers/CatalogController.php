@@ -15,7 +15,14 @@ class CatalogController extends Controller
         $direction = $request->input('direction', 'asc') === 'asc' ? 'asc' : 'desc';
 
         $groups = Group::where('id_parent', 0)
+            ->with('children')
             ->get();
+
+        foreach( $groups as $group ) {
+            $groupIds = $group->getProductIds();
+
+            $group->productsCount = Product::where('id_group', $groupIds)->count();
+        }
 
         $products = Product::query()
             ->with(['group', 'price'])
@@ -29,7 +36,7 @@ class CatalogController extends Controller
             ->select('products.*')
             ->paginate(12)
             ->withQueryString();
-
+    
         
         return view('catalog.index', compact('groups', 'products'));
     }

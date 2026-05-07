@@ -6,7 +6,7 @@
             <div class="list-group">
                 @foreach ($groups as $group)
                     <a href="/group/{{ $group->id }}" class="list-group-item list-group-item-action">
-                        {{ $group->name }}
+                        {{ $group->name }} ({{ $group->productsCount }})
                     </a>
                 @endforeach
             </div>
