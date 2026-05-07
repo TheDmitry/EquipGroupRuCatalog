@@ -1,4 +1,8 @@
 @extends('layouts.base')
+@php
+    $view = request('view', 'list');
+@endphp
+@vite('resources/js/index.js')
 
 @section('content')
     <div class="row">
@@ -31,16 +35,17 @@
         </div>
 
         <div class="col-8">
-            <div class="row row-cols-1 gap-0 row-gap-1 d-flex">
+            <div class="container-fluid d-flex gap-2">
+                @include('components.sort-dropdown')
+                @include('components.pagination-settings')
+                @include('components.catalog-style-settings')
+            </div>
+            <div class="mt-4">
+                {{ $products->links('components.pagination') }}
+            </div>
+            <div id="products" class="row {{ $view === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
 
-                <div class="container-fluid d-flex gap-2">
-                    @include('components.sort-dropdown')
-                    @include('components.pagination-settings')
-                </div>
 
-                <div class="mt-4">
-                    {{ $products->links('components.pagination') }}
-                </div>
                 @foreach ($products as $product)
                     <div class="col">
                         <div class="card">
