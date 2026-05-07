@@ -10,7 +10,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        Test!
+        @foreach ($groups as $group)
+            <span>{{ $group->name }}</span>
+        @endforeach
      
     </body>
 </html>
