@@ -8,11 +8,10 @@
     <div class="row">
         <div class="col-2">
             <div class="list-group shadow-sm">
+
                 @foreach ($groups as $group)
-                    <a href="/group/{{ $group->id }}" class="list-group-item list-group-item-action">
-
-                        <div class="d-flex justify-content-between align-items-center">
-
+                    <div class="list-group-item d-flex justify-content-between align-items-center btn btn-primary">
+                        <a href="/group/{{ $group->id }}" class="text-decoration-none flex-grow-1 text-reset">
                             <div>
                                 <div class="fw-semibold">
                                     {{ $group->name }}
@@ -22,14 +21,13 @@
                                     Категория
                                 </small>
                             </div>
+                        </a>
 
-                            <span class="badge bg-secondary rounded-pill fs-6">
-                                {{ $group->productsCount }}
-                            </span>
+                        <span class="badge bg-secondary rounded-pill fs-6 ms-2">
+                            {{ $group->productsCount }}
+                        </span>
 
-                        </div>
-
-                    </a>
+                    </div>
                 @endforeach
             </div>
         </div>
@@ -43,7 +41,8 @@
             <div class="mt-4">
                 {{ $products->links('components.pagination') }}
             </div>
-            <div id="products" class="row {{ $view === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
+            <div id="products"
+                class="row {{ $view === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
 
 
                 @foreach ($products as $product)
