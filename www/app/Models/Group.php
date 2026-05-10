@@ -38,4 +38,15 @@ class Group extends Model
 
         return $ids;
     }
+
+    public function getChildrenIds(): array
+    {
+        $ids = [$this->id];
+
+        foreach ($this->children as $child) {
+            $ids = array_merge($ids, $child->getChildrenIds());
+        }
+
+        return $ids;
+    }
 }

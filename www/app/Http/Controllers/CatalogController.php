@@ -22,9 +22,9 @@ class CatalogController extends Controller
             ->get();
 
         foreach ($groups as $group) {
-            $groupIds = $group->getProductIds();
+            $groupIds = $group->getChildrenIds();
 
-            $group->productsCount = Product::where('id_group', $groupIds)->count();
+            $group->productsCount = Product::whereIn('id_group', $groupIds)->count();
         }
 
         $products = Product::query()
@@ -57,9 +57,9 @@ class CatalogController extends Controller
             ->get();
 
         foreach ($groups as $group) {
-            $groupIds = $group->getProductIds();
+            $groupIds = $group->getChildrenIds();
 
-            $group->productsCount = Product::where('id_group', $groupIds)->count();
+            $group->productsCount = Product::whereIn('id_group', $groupIds)->count();
         }
 
         $groupIds = $parent->getProductIds();
