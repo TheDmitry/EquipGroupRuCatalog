@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_parent');
-            $table->string('name')->charset('utf8mb3');
+            $table->string('name', 100);
             $table->timestamps();
         });
     }

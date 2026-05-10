@@ -21,7 +21,7 @@ services:
 
   mysql:
     container_name: catalog_mysql
-    image: mysql:8.0
+    build: ./docker/mysql
     env_file:
       - .env
     ports:

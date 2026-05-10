@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_group')->default(0);
-            $table->string('name')->charset('utf8mb3');
+            $table->string('name', 250);
             $table->timestamps();
         });
     }
