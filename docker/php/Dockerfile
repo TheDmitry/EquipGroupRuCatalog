@@ -12,5 +12,6 @@ RUN mkdir -p storage bootstrap/cache \
 RUN chmod -R 775 storage bootstrap/cache
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN mkdir -p storage/framework/temp
+RUN mkdir -p /tmp && chmod 777 /tmp
 
 WORKDIR /var/www/html

@@ -18,6 +18,8 @@ services:
       - ./www:/var/www/html:Z
     networks:
       - app
+    environment:
+      - TMPDIR=/tmp
 
   mysql:
     container_name: catalog_mysql
