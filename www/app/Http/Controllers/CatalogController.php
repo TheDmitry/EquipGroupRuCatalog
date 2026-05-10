@@ -51,7 +51,9 @@ class CatalogController extends Controller
         $product = Product::with(['group', 'price'])
             ->findOrFail($id);
 
-        return view('catalog.product', compact('product'));
+        $breadcrumbs = $product->group->getPath();
+
+        return view('catalog.product', compact('product', 'breadcrumbs'));
     }
 
     private function productQuery(Request $request): \Illuminate\Database\Eloquent\Builder
