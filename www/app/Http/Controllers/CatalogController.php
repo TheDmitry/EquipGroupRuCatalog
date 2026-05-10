@@ -62,7 +62,7 @@ class CatalogController extends Controller
             $group->productsCount = Product::whereIn('id_group', $groupIds)->count();
         }
 
-        $groupIds = $parent->getProductIds();
+        $groupIds = $parent->getChildrenIds();
 
         $products = Product::query()
             ->with(['group', 'price'])
