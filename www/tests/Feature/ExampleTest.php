@@ -12,10 +12,6 @@ class ExampleTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Тест, что оно вообще работает
-     * @return void
-     */
     public function test_the_application_returns_a_successful_response(): void
     {
         Group::factory()->create(['id_parent' => 0]);
