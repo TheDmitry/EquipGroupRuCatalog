@@ -34,19 +34,6 @@ class Group extends Model
         return $this->hasMany(Product::class, 'id_group');
     }
 
-    public function getProductIds(): array
-    {
-        $ids = Product::where('id_group', $this->id)
-            ->pluck('id')
-            ->toArray();
-
-        foreach ($this->children as $child) {
-            $ids = array_merge($ids, $child->getProductIds());
-        }
-
-        return $ids;
-    }
-
     public function getChildrenIds(): array
     {
         $ids = [$this->id];
