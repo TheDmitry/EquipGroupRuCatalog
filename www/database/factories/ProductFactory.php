@@ -18,8 +18,10 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $groupId = Group::inRandomOrder()->value('id');
+
         return [
-            'id_group' => Group::inRandomOrder()->first()->value('id') ?? Group::factory()->create()->id,
+            'id_group' => $groupId ?? Group::factory()->create()->id,
             'name' => fake()->word(),
         ];
     }
