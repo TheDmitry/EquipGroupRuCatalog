@@ -2,7 +2,7 @@
 @php
     $view = request('view', 'list') === 'list' ? 'list' : 'grid';
 @endphp
-@vite('resources/js/index.js')
+@vite('resources/js/catalog.js')
 
 @section('content')
     <div class="row">
