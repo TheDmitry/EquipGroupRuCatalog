@@ -74,3 +74,7 @@ docker compose up --build
 php vendor/bin/phpunit
 ```
 
+## Лицензия
+
+Проект распространяется на условиях лицензии MIT. Подробности см. в файле `LICENSE`.
+
