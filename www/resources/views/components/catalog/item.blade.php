@@ -5,7 +5,7 @@
             @if ($product->price)
                 <p class="card-text">{{ $product->formattedPrice }}</p>
             @endif
-            <a href="/product/{{ $product->id }}" class="btn btn-primary">К товару</a>
+            <a href="/product/{{ $product->id }}?{{ http_build_query(request()->query()) }}" class="btn btn-primary">К товару</a>
         </div>
     </div>
 </div>

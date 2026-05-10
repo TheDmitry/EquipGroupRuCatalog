@@ -82,7 +82,6 @@ php vendor/bin/phpunit
 docker compose run --rm php php artisan test
 ```
 
-
 ## SELinux Warning
 
 Если Вы, уважаемый Читатель, такой же неудачливый пользователь некого SELinux и решили запуститься из докера, отключите SELinux, либо не забудьте настроить окружение.
