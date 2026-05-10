@@ -15,19 +15,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 RUN mkdir -p \
-    storage \
-    storage/framework \
     storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
     storage/framework/testing \
-    storage/framework/temp \
     bootstrap/cache \
     /tmp
 
-RUN chmod -R 775 storage bootstrap/cache /tmp \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache /tmp
 
-USER www-data
+COPY ./docker/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-CMD ["php-fpm"]
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]

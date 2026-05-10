@@ -22,6 +22,7 @@
 
 ```bash
 cp .env.example .env
+cp www/.env.example www/.env
 ```
 
 2. Установить зависимости:
@@ -54,6 +55,8 @@ http://127.0.0.1:8000
 ## Docker
 
 ```bash
+cp .env.example .env
+cp www/.env.example www/.env
 docker compose up --build
 ```
 ВАЖНО: При запуске с докера, прокидывается автоматически тестовый дамп.

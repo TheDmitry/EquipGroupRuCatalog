@@ -13,7 +13,9 @@ services:
 
   php:
     container_name: catalog_php
-    build: ./docker/php
+    build:
+      dockerfile: ./docker/php/Dockerfile
+      context: .
     volumes:
       - ./www:/var/www/html:Z
     networks:
