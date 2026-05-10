@@ -19,6 +19,7 @@ class PriceFactory extends Factory
     public function definition(): array
     {
         return [
+            'id_product' => Product::inRandomOrder()->first()->value('id') ?? Product::factory()->create()->id,
             'price' => fake()->randomFloat(2, 1, 1000),
         ];
     }
