@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('id_product')->default(0);
             $table->double('price');
             $table->timestamps();
+
+            $table->index('price'); // Индекс под сортировку
+            $table->index('id_product'); // Джойны
         });
     }
 

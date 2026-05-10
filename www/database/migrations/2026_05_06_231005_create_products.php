@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('id_group')->default(0);
             $table->string('name', 250);
             $table->timestamps();
+
+            $table->index('name'); // Индекс под сортировку
+            $table->index('id_group'); // Для фильтрации
         });
     }
 

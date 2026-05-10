@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('id_parent');
             $table->string('name', 100);
             $table->timestamps();
+
+            $table->index('id_parent'); // Строим деревья
         });
     }
 
