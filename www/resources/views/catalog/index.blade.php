@@ -1,7 +1,4 @@
 @extends('layouts.base')
-@php
-    $view = request('view', 'list') === 'list' ? 'list' : 'grid';
-@endphp
 @vite('resources/js/catalog.js')
 
 @section('content')
@@ -17,15 +14,15 @@
 
         <div class="col-8">
             <div class="container-fluid d-flex gap-2">
-                @include('components.catalog.sort-dropdown')
-                @include('components.pagination.settings')
-                @include('components.catalog.style-settings')
+                <x-catalog.sort-dropdown />
+                <x-pagination.settings />
+                <x-catalog.style-settings />
             </div>
             <div class="mt-4">
                 {{ $products->links('components.pagination.bootstrap5') }}
             </div>
             <div id="products"
-                class="row {{ $view === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
+                class="row {{ $currentView === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
 
 
                 @foreach ($products as $product)

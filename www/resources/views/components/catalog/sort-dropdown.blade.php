@@ -1,12 +1,12 @@
 <div class="dropdown">
     <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
         aria-expanded="false">
-        @if (request('sort', 'name') === 'name')
+        @if ($sort === 'name')
             Название
         @else
             Цена
         @endif
-        @if (request('direction', 'asc') === 'asc')
+        @if ($direction === 'asc')
             ↑
         @else
             ↓
