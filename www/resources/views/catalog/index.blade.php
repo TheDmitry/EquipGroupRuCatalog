@@ -5,9 +5,8 @@
     <div class="row">
         <div class="col-2">
             <div class="list-group shadow-sm">
-
                 @foreach ($groups as $group)
-                    @include('components.sidebar.item', ['group' => $group])
+                    <x-sidebar.item :group="$group" />
                 @endforeach
             </div>
         </div>

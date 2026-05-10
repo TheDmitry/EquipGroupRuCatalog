@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 #[Fillable(['id_parent', 'name'])]
 class Group extends Model
@@ -16,6 +17,11 @@ class Group extends Model
     public function children(): HasMany
     {
         return $this->hasMany(self::class, 'id_parent');
+    }
+
+    public function childrenRecursive()
+    {
+        return $this->children()->with('childrenRecursive');
     }
 
     public function parent(): BelongsTo
@@ -30,7 +36,9 @@ class Group extends Model
 
     public function getProductIds(): array
     {
-        $ids = $this->products->pluck('id')->toArray();
+        $ids = Product::where('id_group', $this->id)
+            ->pluck('id')
+            ->toArray();
 
         foreach ($this->children as $child) {
             $ids = array_merge($ids, $child->getProductIds());
@@ -48,5 +56,41 @@ class Group extends Model
         }
 
         return $ids;
+    }
+
+    public function hasChildren(): bool
+    {
+        return $this->children()->exists();
+    }
+
+    public function getPath(): array
+    {
+        $ids = [$this->id];
+
+        $parent = $this->parent;
+
+        while ($parent) {
+            $ids[] = $parent->id;
+            $parent = $parent->parent;
+        }
+
+        return array_reverse($ids);
+    }
+
+    public function getProductsCountAttribute(): int
+    {
+        $counts = self::getProductsCountWithCache();
+        $childrenIds = $this->getChildrenIds();
+        return collect($childrenIds)->sum(fn($id) => $counts[$id] ?? 0);
+    }
+
+    public static function getProductsCountWithCache(): array
+    {
+        return Cache::remember('groups_products_count', 300, function () {
+            return Product::selectRaw('id_group, COUNT(*) as cnt')
+                ->groupBy('id_group')
+                ->pluck('cnt', 'id_group')
+                ->toArray();
+        });
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Product;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -11,81 +12,63 @@ class CatalogController extends Controller
 {
     public function index(Request $request): View
     {
-        $sort = $request->input('sort', 'name') === 'name' ? 'name' : 'price';
-        $direction = $request->input('direction', 'asc') === 'asc' ? 'asc' : 'desc';
         $pageSize = $request->integer('pagesize', 12);
 
+        $groups = Group::with('childrenRecursive')->where('id_parent', 0)->get();
 
-
-        $groups = Group::where('id_parent', 0)
-            ->with('children')
-            ->get();
-
-        foreach ($groups as $group) {
-            $groupIds = $group->getChildrenIds();
-
-            $group->productsCount = Product::whereIn('id_group', $groupIds)->count();
-        }
-
-        $products = Product::query()
-            ->with(['group', 'price'])
-            ->leftJoin('prices', 'products.id', '=', 'prices.id_product')
-            ->orderBy(
-                $sort === 'price'
-                ? 'prices.price'
-                : 'products.name',
-                $direction
-            )
-            ->select('products.*')
+        $products = $this->productQuery($request)
             ->paginate($pageSize)
             ->withQueryString();
-
 
         return view('catalog.index', compact('groups', 'products'));
     }
 
     public function group(int $id, Request $request): View
     {
-        $sort = $request->input('sort', 'name') === 'name' ? 'name' : 'price';
-        $direction = $request->input('direction', 'asc') === 'asc' ? 'asc' : 'desc';
         $pageSize = $request->integer('pagesize', 12);
 
-        $parent = Group::with('children')->findOrFail($id);
+        // Корень
+        $groups = Group::with('childrenRecursive')->where('id_parent', 0)->get();
 
-        $groups = Group::where('id_parent', 0)
-            ->with('children')
-            ->get();
+        // Текущая + путь до нее
+        $parent = Group::with('childrenRecursive')->findOrFail($id);
+        $path = $parent->getPath();
 
-        foreach ($groups as $group) {
-            $groupIds = $group->getChildrenIds();
-
-            $group->productsCount = Product::whereIn('id_group', $groupIds)->count();
-        }
-
+        // Текущая ветка
         $groupIds = $parent->getChildrenIds();
 
-        $products = Product::query()
-            ->with(['group', 'price'])
+        $products = $this->productQuery($request)
             ->whereIn('id_group', $groupIds)
-            ->leftJoin('prices', 'products.id', '=', 'prices.id_product')
-            ->orderBy(
-                $sort === 'price' ? 'prices.price' : 'products.name',
-                $direction
-            )
-            ->select('products.*')
             ->paginate($pageSize)
             ->withQueryString();
 
-        
 
-        return view('catalog.group', compact('parent', 'groups', 'products'));
+        return view('catalog.group', compact('parent', 'groups', 'products', 'path'));
     }
 
-    public function product(int $id, Request $request): View
+    public function product(int $id): View
     {
-        $product = Product::with('group', 'price')
+        $product = Product::with(['group', 'price'])
             ->findOrFail($id);
 
         return view('catalog.product', compact('product'));
+    }
+
+    private function productQuery(Request $request): \Illuminate\Database\Eloquent\Builder
+    {
+        $sort = $request->input('sort', 'name');
+        $direction = $request->input('direction', 'asc');
+
+        $query = Product::with(['group', 'price']);
+
+        if ($sort === 'price') {
+            $query->leftJoin('prices', 'products.id', '=', 'prices.id_product')
+                  ->orderBy('prices.price', $direction)
+                  ->select('products.*', 'prices.price');
+        } else {
+            $query->orderBy('products.name', $direction);
+        }
+
+        return $query;
     }
 }

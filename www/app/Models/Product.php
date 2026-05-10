@@ -14,6 +14,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $appends = ['formatted_price']; // Добавлено для автоматического включения аксессора
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class, 'id_group');
@@ -25,8 +27,8 @@ class Product extends Model
         return $this->hasOne(Price::class, 'id_product');
     }
 
-    public function getFormattedPrice(): string
+    public function getFormattedPriceAttribute(): string
     {
-        return number_format($this->price->price ?? 0, 2, '.', ' ') . ' ₽';
+        return number_format($this->price?->price ?? 0, 2, '.', ' ') . ' ₽';
     }
 }
