@@ -8,11 +8,12 @@
     <div class="row">
         <div class="col-2">
             <div class="list-group shadow-sm">
-                @foreach ($groups as $group)
-                    <a href="/group/{{ $group->id }}"
-                        class="list-group-item list-group-item-action{{ $parent->id === $group->id ? ' active' : '' }}">
 
-                        <div class="d-flex justify-content-between align-items-center">
+                @foreach ($groups as $group)
+                    <div class="list-group-item d-flex justify-content-between align-items-center
+                            {{ $parent->id === $group->id ? 'active' : '' }}">
+
+                        <a href="/group/{{ $group->id }}" class="text-decoration-none flex-grow-1 text-reset">
 
                             <div>
                                 <div class="fw-semibold">
@@ -24,61 +25,33 @@
                                 </small>
                             </div>
 
-                            <span class="badge bg-secondary rounded-pill fs-6">
-                                {{ $group->productsCount }}
-                            </span>
-                            @if ($parent->id === $group->id)
-                                @foreach ($group->children as $child)
-                                    <a href="/group/{{ $child->id }}"
-                                        class="list-group-item list-group-item-action ms-3 {{ $parent->id === $child->id ? 'active' : '' }}">
+                        </a>
 
-                                        <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary rounded-pill fs-6 ms-2">
+                            {{ $group->productsCount }}
+                        </span>
 
-                                            <div>
-                                                └ {{ $child->name }}
-                                            </div>
-
-                                            <span class="badge bg-light text-dark rounded-pill">
-                                                {{ $child->productsCount ?? 0 }}
-                                            </span>
-
-                                        </div>
-
-                                    </a>
-                                @endforeach
-                            @endif
-                        </div>
-
-                    </a>
+                    </div>
                 @endforeach
+
             </div>
         </div>
 
         <div class="col-8">
             <div class="container-fluid d-flex gap-2">
-                @include('components.sort-dropdown')
-                @include('components.pagination-settings')
-                @include('components.catalog-style-settings')
+                @include('components.catalog.sort-dropdown')
+                @include('components.pagination.settings')
+                @include('components.catalog.style-settings')
             </div>
             <div class="mt-4">
-                {{ $products->links('components.pagination') }}
+                {{ $products->links('components.pagination.bootstrap5') }}
             </div>
             <div id="products"
                 class="row {{ $view === 'grid' ? 'row-cols-3 row-cols-md-3' : 'row-cols-1' }} gap-0 row-gap-1 d-flex">
 
 
                 @foreach ($products as $product)
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-                                @if ($product->price)
-                                    <p class="card-text">{{ $product->getFormattedPrice() }}</p>
-                                @endif
-                                <a href="/product/{{ $product->id }}" class="btn btn-primary">К товару</a>
-                            </div>
-                        </div>
-                    </div>
+                    @include('components.catalog.item', ['product' => $product])
                 @endforeach
             </div>
         </div>
