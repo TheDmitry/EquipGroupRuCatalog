@@ -20,7 +20,7 @@ class PriceFactory extends Factory
     {
         return [
             'id_product' => Product::inRandomOrder()->first()->value('id') ?? Product::factory()->create()->id,
-            'price' => fake()->randomFloat(2, 1, 1000),
+            'price' => $this->faker->randomFloat(2, 1, 1000),
         ];
     }
 }

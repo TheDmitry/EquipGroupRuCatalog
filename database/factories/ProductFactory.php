@@ -22,7 +22,7 @@ class ProductFactory extends Factory
 
         return [
             'id_group' => $groupId ?? Group::factory()->create()->id,
-            'name' => fake()->word(),
+            'name' => $this->faker->word(),
         ];
     }
 }

@@ -19,7 +19,7 @@ class GroupFactory extends Factory
     {
         return [
             'id_parent' => 0,
-            'name' => fake()->word(),
+            'name' => $this->faker->word(),
         ];
     }
 }
