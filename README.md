@@ -63,8 +63,7 @@ docker compose up --build
 
 Грузим дамп БД.
 ```bash
-docker ps
-cat database/dumps/test.sql | docker exec -i <id-mysql контейнера> mysql -u root -proot catalog
+cat database/dumps/test.sql | docker exec -i catalog_mysql mysql -u root -proot catalog
 
 ```
 
