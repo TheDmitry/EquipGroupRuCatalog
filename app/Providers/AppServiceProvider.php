@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Group;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 
@@ -21,7 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(['catalog.index', 'catalog.group'], function ($view) {
-            $view->with('currentView', request('view', 'list') === 'list' ? 'list' : 'grid');
+            $view->with('currentView', request('view', 'list') === 'list' ? 'list' : 'grid')
+                 ->with('groups', Group::rootTree());
         });
     }
 }

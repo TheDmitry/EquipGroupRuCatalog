@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
 #[Fillable(['id_parent', 'name'])]
@@ -79,5 +80,27 @@ class Group extends Model
                 ->pluck('cnt', 'id_group')
                 ->toArray();
         });
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(fn(self $group) => self::flushCache());
+        static::deleted(fn(self $group) => self::flushCache());
+    }
+
+    public static function rootTree(): Collection
+    {
+        $ids = Cache::remember('catalog_root_group_ids', 3600, function () {
+            return self::where('id_parent', 0)->pluck('id')->toArray();
+        });
+
+        return self::with('childrenRecursive')->whereIn('id', $ids)->get();
+    }
+
+    public static function flushCache(): void
+    {
+        Cache::forget('catalog_root_group_ids');
+        Cache::forget('catalog_root_groups');
+        Cache::forget('groups_products_count');
     }
 }

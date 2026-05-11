@@ -31,4 +31,10 @@ class Product extends Model
     {
         return number_format($this->price?->price ?? 0, 2, '.', ' ') . ' ₽';
     }
+
+    protected static function booted(): void
+    {
+        static::saved(fn(self $product) => Group::flushCache());
+        static::deleted(fn(self $product) => Group::flushCache());
+    }
 }
