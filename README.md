@@ -58,7 +58,6 @@ http://127.0.0.1:8000
 
 ```bash
 cp .env.example .env
-cp www/.env.example www/.env
 docker compose up --build
 ```
 
