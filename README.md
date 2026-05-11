@@ -67,6 +67,10 @@ cat database/dumps/test.sql | docker exec -i catalog_mysql mysql -u root -proot 
 
 ```
 
+
+### Важно
+    - Имеется две конфигурации. docker-compose.prod.yaml = голая БД с миграциями, docker-compose.yaml = голая БД без миграций + дев окружение.
+
 ## Что интересного
 
 - сортировка по цене реализована через join `products` и `prices`;
